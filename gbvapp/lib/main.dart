@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     const Text('Home Page Content'), // Placeholder for the Home Page
-    const AboutUsPage(), // The About Us Page
+    AboutUsPage(), // The About Us Page
   ];
 
   void _onItemTapped(int index) {

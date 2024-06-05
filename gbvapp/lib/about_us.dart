@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AboutUsPage extends StatelessWidget {
-  const AboutUsPage({super.key});
+  BuildContext? get context => null;
 
   @override
   Widget build(BuildContext context) {
@@ -9,44 +10,71 @@ class AboutUsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('About Us'),
       ),
-      body: const Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'About She advocates',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+            _buildSectionHeader('Mission'),
+            _buildCollapsibleText(
+              'To empower and support individuals affected by gender-based violence through technology, providing immediate assistance, resources, and a supportive community.',
             ),
-            SizedBox(height: 16),
-            SizedBox(
-              child: Text(
-                'She advocates is dedicated to empowering communities against gender-based violence through innovative technology. Our mission is to provide immediate assistance, support resources, and a safe space for survivors of GBV. With the She advocates app, we aim to make essential support accessible to everyone, ensuring safety, privacy, and comprehensive care for those in need.',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
+            SizedBox(height: 20),
+            _buildSectionHeader('Vision'),
+            _buildCollapsibleText(
+              'A world where everyone, regardless of gender, can live free from violence and discrimination.',
             ),
-            SizedBox(height: 16),
-            Text(
-              'Our Team',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Our team consists of experienced developers, designers, and social workers who are passionate about using technology to create a positive impact. We are committed to continuously improving She advocates to better serve the needs of GBV survivors.',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
+            SizedBox(height: 20),
+            _buildSectionHeader('Contact Us'),
+            _buildContactInfo('Email', 'support@sheadvocates.com'),
+            _buildContactInfo('Phone', '+123 456 7890'),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildCollapsibleText(String text) {
+    return ExpansionTile(
+      childrenPadding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+      title: Text(
+        text,
+        style: TextStyle(fontSize: 16),
+      ),
+    );
+  }
+
+  Widget _buildContactInfo(String title, String value) {
+    return ListTile(
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 16),
+      ),
+      subtitle: Text(
+        value,
+        style: TextStyle(fontSize: 14),
+      ),
+      onTap: () {
+        _copyToClipboard(value, context!);
+      },
+    );
+  }
+
+  void _copyToClipboard(String value, BuildContext context) {
+    Clipboard.setData(ClipboardData(text: value));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$value copied to clipboard'),
       ),
     );
   }
